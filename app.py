@@ -1,7 +1,7 @@
 import streamlit as st
 from tensorflow.keras.models import load_model
 import numpy as np
-import cv2
+from PIL import Image
 
 # Judul aplikasi
 st.title("Aplikasi Klasifikasi Jenis Tanah Gambut")
