@@ -15,7 +15,7 @@ classes = ["Fibrik", "Hemik", "Saprik"]  # Sesuaikan dengan label dataset
 
 if uploaded_file is not None:
     # Menampilkan gambar yang diunggah
-    st.image(uploaded_file, caption="Gambar yang diunggah", use_column_width=True)
+    st.image(uploaded_file, caption="Gambar yang diunggah", use_container_width=True)
 
     # Baca gambar
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
