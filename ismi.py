@@ -1,9 +1,7 @@
 import streamlit as st
-import tensorflow as tf
-from PIL import Image
+from tensorflow.keras.models import load_model
 import numpy as np
-import pickle
-import matplotlib.pyplot as plt
+import cv2
 
 # Judul Aplikasi
 st.title("Klasifikasi Jenis Tanah Gambut di Rokan Hulu")
