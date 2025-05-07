@@ -6,10 +6,14 @@ import cv2
 import pickle
 from PIL import Image
 import os
+import matplotlib.pyplot as plt
+
 
 # Judul aplikasi
 st.title("Klasifikasi Jenis Tanah Gambut")
 st.markdown("Model CNN Untuk Klasifikasi Tanah Gambut: **Fibrik**, **Hemik**, dan **Saprik**.")
+
+st.image("https://upload.wikimedia.org/wikipedia/commons/3/35/Tanah_gambut.jpg", use_container_width=True)
 
 # Sidebar Menu
 menu = st.sidebar.selectbox("Navigasi", ["Beranda", "Upload Gambar", "Grafik Model", "Tentang"])
