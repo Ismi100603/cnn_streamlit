@@ -1,11 +1,16 @@
 import streamlit as st
 from tensorflow.keras.models import load_model
+import tensorflow as tf
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
+import pickle
+from PIL import Image
+import os
 
 # Judul aplikasi
 st.title("Klasifikasi Jenis Tanah Gambut")
-st.title("Model CNN Untuk Klasifikasi Tanah Gambut: **Fibrik**, **Hemik**, dan **Saprik**.")
+st.markdown("Model CNN Untuk Klasifikasi Tanah Gambut: **Fibrik**, **Hemik**, dan **Saprik**.")
 
 # Sidebar Menu
 menu = st.sidebar.selectbox("Navigasi", ["Beranda", "Upload Gambar", "Grafik Model", "Tentang"])
@@ -20,11 +25,12 @@ def prediksi_tanah(image, model):
     probabilitas = prediction[0][np.argmax(prediction)]
     return hasil, probabilitas, prediction[0]
 
-uploaded_file = st.file_uploader("Unggah gambar tanah (jpg/png)", type=["jpg", "png", "jpeg"])
-
 # Beranda
 if menu == "Beranda":
-    st.image("gambar_logo.png", use_column_width=True)  # Ganti dengan logo kampus jika ada
+    if os.path.exists("gambar_logo.png"):
+        st.image("gambar_logo.png", use_container_width=True)
+    else:
+        st.warning("Gambar logo tidak ditemukan.")
     st.markdown("**Aplikasi ini digunakan untuk mengklasifikasikan jenis tanah gambut** berdasarkan gambar menggunakan Convolutional Neural Network (CNN).")
 
 # Upload Gambar
@@ -33,26 +39,30 @@ elif menu == "Upload Gambar":
 
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Gambar Diupload", use_column_width=True)
+        st.image(image, caption="Gambar Diupload", use_container_width=True)
 
         if st.button("Prediksi"):
-            model = tf.keras.models.load_model("cnn_tanah_gambut.h5")
-            hasil, prob, all_probs = prediksi_tanah(image, model)
+            try:
+                model = tf.keras.models.load_model("cnn_tanah_gambut.h5")
+                hasil, prob, all_probs = prediksi_tanah(image, model)
 
-            st.success(f"Jenis Tanah: **{hasil}**")
-            st.info(f"Probabilitas: {prob * 100:.2f}%")
+                st.success(f"Jenis Tanah: **{hasil}**")
+                st.info(f"Probabilitas: {prob * 100:.2f}%")
 
-            # Visualisasi Probabilitas
-            st.subheader("Probabilitas Tiap Kelas")
-            fig, ax = plt.subplots()
-            kelas = ['Fibrik', 'Hemik', 'Saprik']
-            ax.bar(kelas, all_probs, color='skyblue')
-            ax.set_ylabel("Probabilitas")
-            st.pyplot(fig)
+                # Visualisasi Probabilitas
+                st.subheader("Probabilitas Tiap Kelas")
+                fig, ax = plt.subplots()
+                kelas = ['Fibrik', 'Hemik', 'Saprik']
+                ax.bar(kelas, all_probs, color='skyblue')
+                ax.set_ylabel("Probabilitas")
+                st.pyplot(fig)
 
-            # Tombol unduh hasil
-            hasil_text = f"Jenis Tanah: {hasil}\nProbabilitas: {prob*100:.2f}%"
-            st.download_button("Unduh Hasil Prediksi", hasil_text, file_name="hasil_prediksi.txt")
+                # Tombol unduh hasil
+                hasil_text = f"Jenis Tanah: {hasil}\nProbabilitas: {prob*100:.2f}%"
+                st.download_button("Unduh Hasil Prediksi", hasil_text, file_name="hasil_prediksi.txt")
+
+            except Exception as e:
+                st.error(f"Gagal memuat model atau memproses gambar: {e}")
 
 # Grafik Model
 elif menu == "Grafik Model":
@@ -78,8 +88,10 @@ elif menu == "Grafik Model":
         ax2.legend()
         st.pyplot(fig2)
 
-    except:
+    except FileNotFoundError:
         st.warning("File riwayat_pelatihan.pkl tidak ditemukan.")
+    except Exception as e:
+        st.error(f"Terjadi kesalahan saat menampilkan grafik: {e}")
 
 # Tentang
 elif menu == "Tentang":
@@ -100,4 +112,3 @@ elif menu == "Tentang":
     **Kontak & Sumber:**
     - GitHub: [Ismi100603](https://github.com/Ismi100603)
     """)
-
