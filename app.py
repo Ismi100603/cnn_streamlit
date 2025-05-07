@@ -10,12 +10,12 @@ st.title("Aplikasi Klasifikasi Jenis Tanah Gambut")
 uploaded_file = st.file_uploader("Upload gambar tanah gambut", type=["jpg", "png", "jpeg"])
 
 # Load model CNN yang telah disimpan
-model = load_model("cnn_tanah_gambut.h5")
+model = load_model("cnn_tanah_gambut.h5", compile=False)
 classes = ["Fibrik", "Hemik", "Saprik"]  # Sesuaikan dengan label dataset
 
 if uploaded_file is not None:
     # Menampilkan gambar yang diunggah
-    st.image(uploaded_file, caption="Gambar yang diunggah", use_column_width=True)
+    st.image(uploaded_file, caption="Gambar yang diunggah", use_container_width=True)
 
     # Baca gambar
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
