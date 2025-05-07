@@ -28,7 +28,10 @@ def prediksi_tanah(image, model):
 
 # Beranda
 if menu == "Beranda":
-    st.image("https://upload.wikimedia.org/wikipedia/commons/3/35/Tanah_gambut.jpg", use_container_width=True)
+    if os.path.exists("logo.jpg"):
+    st.image("logo.jpg", use_container_width=True)
+else:
+    st.warning("Gambar logo tidak ditemukan.")
     st.markdown("**Aplikasi ini digunakan untuk mengklasifikasikan jenis tanah gambut** berdasarkan gambar menggunakan Convolutional Neural Network (CNN).")
 
 # Upload Gambar
