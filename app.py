@@ -29,7 +29,7 @@ def prediksi_tanah(image, model):
 # Beranda
 if menu == "Beranda":
     if os.path.exists("logo.jpg"):
-        st.image("logo.jpg", use_container_width=True)
+        st.image("logo.jpg", use_container_width=150)
     else:
         st.warning("Gambar logo tidak ditemukan.")
 
