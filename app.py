@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 st.title("Klasifikasi Jenis Tanah Gambut")
 st.markdown("Model CNN Untuk Klasifikasi Tanah Gambut: **Fibrik**, **Hemik**, dan **Saprik**.")
 
-st.image("https://upload.wikimedia.org/wikipedia/commons/3/35/Tanah_gambut.jpg", use_container_width=True)
+st.image("C:\xampp\htdocs\tanahgambut\logo.jfif", use_container_width=True)
 
 # Sidebar Menu
 menu = st.sidebar.selectbox("Navigasi", ["Beranda", "Upload Gambar", "Grafik Model", "Tentang"])
