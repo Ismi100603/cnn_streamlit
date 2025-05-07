@@ -28,10 +28,7 @@ def prediksi_tanah(image, model):
 
 # Beranda
 if menu == "Beranda":
-    if os.path.exists("logo.jng"):
-        st.image("logo.jng", use_container_width=True)
-    else:
-        st.warning("Gambar logo tidak ditemukan.")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/3/35/Tanah_gambut.jpg", use_container_width=True)
     st.markdown("**Aplikasi ini digunakan untuk mengklasifikasikan jenis tanah gambut** berdasarkan gambar menggunakan Convolutional Neural Network (CNN).")
 
 # Upload Gambar
@@ -70,7 +67,7 @@ elif menu == "Grafik Model":
     st.subheader("Grafik Akurasi dan Loss Model")
 
     try:
-        with open("riwayat_pelatihan.pkl", "rb") as file:
+        with open("training_history.pkl", "rb") as file:
             history = pickle.load(file)
 
         # Grafik Akurasi
@@ -90,7 +87,7 @@ elif menu == "Grafik Model":
         st.pyplot(fig2)
 
     except FileNotFoundError:
-        st.warning("File riwayat_pelatihan.pkl tidak ditemukan.")
+        st.warning("File training_history.pkl tidak ditemukan.")
     except Exception as e:
         st.error(f"Terjadi kesalahan saat menampilkan grafik: {e}")
 
