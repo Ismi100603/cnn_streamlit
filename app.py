@@ -3,7 +3,6 @@ from tensorflow.keras.models import load_model
 import tensorflow as tf
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
 import pickle
 from PIL import Image
 import os
