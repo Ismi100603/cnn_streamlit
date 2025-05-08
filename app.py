@@ -16,7 +16,7 @@ st.markdown("Model CNN Untuk Klasifikasi Tanah Gambut: **Fibrik**, **Hemik**, da
 # Sidebar Menu
 menu = st.sidebar.selectbox("Navigasi", ["Beranda", "Upload Gambar", "Grafik Model", "Tentang"])
 
-<<<<<<< HEAD
+
 # Load model CNN yang telah disimpan
 model = load_model("cnn_tanah_gambut.h5", compile=False)
 classes = ["Fibrik", "Hemik", "Saprik"]  # Sesuaikan dengan label dataset
