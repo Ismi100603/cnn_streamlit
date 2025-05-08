@@ -1,14 +1,22 @@
 import streamlit as st
 from tensorflow.keras.models import load_model
+import tensorflow as tf
 import numpy as np
 import cv2
+import pickle
+from PIL import Image
+import os
+import matplotlib.pyplot as plt
+
 
 # Judul aplikasi
-st.title("Aplikasi Klasifikasi Jenis Tanah Gambut")
+st.title("Klasifikasi Jenis Tanah Gambut")
+st.markdown("Model CNN Untuk Klasifikasi Tanah Gambut: **Fibrik**, **Hemik**, dan **Saprik**.")
 
-# Input gambar
-uploaded_file = st.file_uploader("Upload gambar tanah gambut", type=["jpg", "png", "jpeg"])
+# Sidebar Menu
+menu = st.sidebar.selectbox("Navigasi", ["Beranda", "Upload Gambar", "Grafik Model", "Tentang"])
 
+<<<<<<< HEAD
 # Load model CNN yang telah disimpan
 model = load_model("cnn_tanah_gambut.h5", compile=False)
 classes = ["Fibrik", "Hemik", "Saprik"]  # Sesuaikan dengan label dataset
@@ -16,17 +24,103 @@ classes = ["Fibrik", "Hemik", "Saprik"]  # Sesuaikan dengan label dataset
 if uploaded_file is not None:
     # Menampilkan gambar yang diunggah
     st.image(uploaded_file, caption="Gambar yang diunggah", use_container_width=True)
+=======
+# Fungsi Prediksi
+def prediksi_tanah(image, model):
+    img = image.resize((224, 224))
+    img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
+    prediction = model.predict(img_array)
+    kelas = ['Fibrik', 'Hemik', 'Saprik']
+    hasil = kelas[np.argmax(prediction)]
+    probabilitas = prediction[0][np.argmax(prediction)]
+    return hasil, probabilitas, prediction[0]
 
-    # Baca gambar
-    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-    img = cv2.imdecode(file_bytes, 1)
-    img = cv2.resize(img, (224, 224))  # Sesuaikan dengan input model
-    img = img / 255.0  # Normalisasi
-    img = np.expand_dims(img, axis=0)  # Tambahkan batch dimension
+# Beranda
+if menu == "Beranda":
+    if os.path.exists("logo.jpg"):
+        st.image("logo.jpg", use_container_width=150)
+    else:
+        st.warning("Gambar logo tidak ditemukan.")
+>>>>>>> 7e88e8cc0b28b1f2e5ad326824188712c05ec02b
 
-    # Prediksi
-    prediction = model.predict(img)
-    predicted_class = classes[np.argmax(prediction)]
+    st.markdown("**Aplikasi ini digunakan untuk mengklasifikasikan jenis tanah gambut** berdasarkan gambar menggunakan Convolutional Neural Network (CNN).")
 
-    # Tampilkan hasil prediksi
-    st.write(f"**Hasil Prediksi:** {predicted_class}")
+# Upload Gambar
+elif menu == "Upload Gambar":
+    uploaded_file = st.file_uploader("Unggah gambar tanah (jpg/png)", type=["jpg", "png", "jpeg"])
+
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Gambar Diupload", use_container_width=True)
+
+        if st.button("Prediksi"):
+            try:
+                model = tf.keras.models.load_model("cnn_tanah_gambut.h5")
+                hasil, prob, all_probs = prediksi_tanah(image, model)
+
+                st.success(f"Jenis Tanah: **{hasil}**")
+                st.info(f"Probabilitas: {prob * 100:.2f}%")
+
+                # Visualisasi Probabilitas
+                st.subheader("Probabilitas Tiap Kelas")
+                fig, ax = plt.subplots()
+                kelas = ['Fibrik', 'Hemik', 'Saprik']
+                ax.bar(kelas, all_probs, color='skyblue')
+                ax.set_ylabel("Probabilitas")
+                st.pyplot(fig)
+
+                # Tombol unduh hasil
+                hasil_text = f"Jenis Tanah: {hasil}\nProbabilitas: {prob*100:.2f}%"
+                st.download_button("Unduh Hasil Prediksi", hasil_text, file_name="hasil_prediksi.txt")
+
+            except Exception as e:
+                st.error(f"Gagal memuat model atau memproses gambar: {e}")
+
+# Grafik Model
+elif menu == "Grafik Model":
+    st.subheader("Grafik Akurasi dan Loss Model")
+
+    try:
+        with open("training_history.pkl", "rb") as file:
+            history = pickle.load(file)
+
+        # Grafik Akurasi
+        fig1, ax1 = plt.subplots()
+        ax1.plot(history['accuracy'], label='Akurasi Training')
+        ax1.plot(history['val_accuracy'], label='Akurasi Validasi')
+        ax1.set_title("Akurasi")
+        ax1.legend()
+        st.pyplot(fig1)
+
+        # Grafik Loss
+        fig2, ax2 = plt.subplots()
+        ax2.plot(history['loss'], label='Loss Training')
+        ax2.plot(history['val_loss'], label='Loss Validasi')
+        ax2.set_title("Loss")
+        ax2.legend()
+        st.pyplot(fig2)
+
+    except FileNotFoundError:
+        st.warning("File training_history.pkl tidak ditemukan.")
+    except Exception as e:
+        st.error(f"Terjadi kesalahan saat menampilkan grafik: {e}")
+
+# Tentang
+elif menu == "Tentang":
+    st.subheader("Tentang Aplikasi")
+    st.markdown("""
+    Aplikasi ini dikembangkan oleh **Ismi Asmita** dari Universitas Pasir Pengaraian. 
+    Tujuan utama aplikasi ini adalah untuk membantu klasifikasi jenis tanah gambut seperti:
+    - Fibrik
+    - Hemik
+    - Saprik
+
+    **Teknologi yang digunakan:**
+    - Convolutional Neural Network (CNN)
+    - Streamlit untuk antarmuka pengguna
+    - TensorFlow & Keras untuk pelatihan model
+    - Matplotlib & Pickle untuk visualisasi
+
+    **Kontak & Sumber:**
+    - GitHub: [Ismi100603](https://github.com/Ismi100603)
+    """)

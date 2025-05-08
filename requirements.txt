@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 absl-py==2.1.0
 altair==5.5.0
 anyio==4.8.0
@@ -176,3 +177,12 @@ Werkzeug==3.1.3
 widgetsnbextension==4.0.13
 wrapt==1.14.1
 zipp==3.21.0
+=======
+streamlit
+numpy
+tensorflow
+matplotlib
+opencv-python-headless
+pillow
+
+>>>>>>> 7e88e8cc0b28b1f2e5ad326824188712c05ec02b
