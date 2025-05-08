@@ -24,7 +24,7 @@ classes = ["Fibrik", "Hemik", "Saprik"]  # Sesuaikan dengan label dataset
 if uploaded_file is not None:
     # Menampilkan gambar yang diunggah
     st.image(uploaded_file, caption="Gambar yang diunggah", use_container_width=True)
-=======
+
 # Fungsi Prediksi
 def prediksi_tanah(image, model):
     img = image.resize((224, 224))
@@ -41,7 +41,7 @@ if menu == "Beranda":
         st.image("logo.jpg", use_container_width=150)
     else:
         st.warning("Gambar logo tidak ditemukan.")
->>>>>>> 7e88e8cc0b28b1f2e5ad326824188712c05ec02b
+
 
     st.markdown("**Aplikasi ini digunakan untuk mengklasifikasikan jenis tanah gambut** berdasarkan gambar menggunakan Convolutional Neural Network (CNN).")
 
