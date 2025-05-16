@@ -59,7 +59,7 @@ elif menu == "Upload Gambar":
                 # Visualisasi Probabilitas
                 st.subheader("Probabilitas Tiap Kelas")
                 fig, ax = plt.subplots()
-                kelas = ['Fibrik', 'Hemik', 'Saprik','nontanah']
+                kelas = ['Fibrik', 'Hemik', 'Saprik', 'nontanah']  # Tambahkan kelas nontanah
                 ax.bar(kelas, all_probs, color='skyblue')
                 ax.set_ylabel("Probabilitas")
                 st.pyplot(fig)
