@@ -24,12 +24,12 @@ def prediksi_tanah(image, model):
     kelas = ['Fibrik', 'Hemik', 'Saprik','nontanah']
     hasil = kelas[np.argmax(prediction)]
     max_prob = np.max(prediction[0])
+    
+   # Logika sederhana untuk memperkuat hasil 'Bukan Tanah Gambut'
+    if hasil == "nontanah" and max_prob < 0.60:
+        hasil = "Gambar tidak dikenali secara yakin sebagai Bukan Tanah Gambut"
 
-# Logika sederhana untuk memperkuat hasil 'Bukan Tanah Gambut'
-if hasil == "nontanah" and max_prob < 0.60:
-    hasil = "Gambar tidak dikenali secara yakin sebagai Bukan Tanah Gambut"
-
-return hasil, max_prob, prediction[0]
+    return hasil, max_prob, prediction[0]
 
 # Beranda
 if menu == "Beranda":
