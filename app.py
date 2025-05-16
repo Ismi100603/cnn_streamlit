@@ -111,6 +111,7 @@ elif menu == "Tentang":
     - Fibrik
     - Hemik
     - Saprik
+    - nontanah
 
     **Teknologi yang digunakan:**
     - Convolutional Neural Network (CNN)
