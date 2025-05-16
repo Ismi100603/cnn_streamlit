@@ -21,6 +21,8 @@ def prediksi_tanah(image, model):
     img = image.resize((224, 224))
     img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
     prediction = model.predict(img_array)
+    print("Prediction shape:", prediction.shape)
+    print("Prediction:", prediction)
     kelas = ['Fibrik', 'Hemik', 'Saprik','nontanah']
     hasil = kelas[np.argmax(prediction)]
     max_prob = np.max(prediction[0])
