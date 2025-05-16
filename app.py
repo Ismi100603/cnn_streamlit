@@ -21,10 +21,15 @@ def prediksi_tanah(image, model):
     img = image.resize((224, 224))
     img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
     prediction = model.predict(img_array)
-    kelas = ['Fibrik', 'Hemik', 'Saprik']
+    kelas = ['Fibrik', 'Hemik', 'Saprik','nontanah']
     hasil = kelas[np.argmax(prediction)]
-    probabilitas = prediction[0][np.argmax(prediction)]
-    return hasil, probabilitas, prediction[0]
+    max_prob = np.max(prediction[0])
+
+# Logika sederhana untuk memperkuat hasil 'Bukan Tanah Gambut'
+if hasil == "nontanah" and max_prob < 0.60:
+    hasil = "Gambar tidak dikenali secara yakin sebagai Bukan Tanah Gambut"
+
+return hasil, max_prob, prediction[0]
 
 # Beranda
 if menu == "Beranda":
